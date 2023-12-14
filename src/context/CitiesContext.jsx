@@ -33,13 +33,50 @@ function CitiesProvider({ children }) {
       setIsLoading(false);
     }
   };
+  const createCity = async (newCity) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `http://localhost:9000/cities/`,
+        newCity
+      );
+
+      // const data = await response.json();
+      console.log(response.data);
+      setCities((cities) => [...cities, response.data]);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  async function deleteCity(id) {
+    try {
+      const response = await axios.delete(`http://localhost:9000/cities/${id}`);
+
+      // const data = await response.json();
+    } catch (error) {
+      console.error(error);
+    }
+    setCities((cities) => cities.filter((city) => city.id !== id));
+  }
 
   useEffect(() => {
     fetchCities();
   }, []);
 
   return (
-    <citiesContext.Provider value={{ cities, isLoading, getCity, currentCity }}>
+    <citiesContext.Provider
+      value={{
+        cities,
+        isLoading,
+        getCity,
+        currentCity,
+        createCity,
+        deleteCity,
+      }}
+    >
       {children}
     </citiesContext.Provider>
   );

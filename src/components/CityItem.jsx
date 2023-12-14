@@ -3,9 +3,14 @@ import styles from "./CityItem.module.css";
 import { Link } from "react-router-dom";
 import { useCities } from "../context/CitiesContext";
 function CityItem({ city }) {
-  const { currentCity } = useCities();
+  const { currentCity, deleteCity } = useCities();
   const { cityName, date, id, position } = city;
   console.log(position);
+
+  function deleteBtn(e) {
+    e.preventDefault();
+    deleteCity(id);
+  }
 
   return (
     <li>
@@ -17,7 +22,9 @@ function CityItem({ city }) {
       >
         <h3 className={styles.name}>{cityName}</h3>
         <time className={styles.date}>{date}</time>
-        <button className={styles.deleteBtn}>&times;</button>
+        <button onClick={deleteBtn} className={styles.deleteBtn}>
+          &times;
+        </button>
       </Link>
       {/* <span className={styles.emoji}>{emoji}</span> */}
       {/* <h3 className={styles.name}>{cityName}</h3>
